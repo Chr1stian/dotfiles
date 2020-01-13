@@ -1,4 +1,4 @@
-# My Terminal Configuration
+# My Terminal Config
 
 ## ZSH
 ### Ubuntu:
