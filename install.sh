@@ -1,26 +1,24 @@
 #!/bin/bash
 
 # Welcome!!
-# Custom dotfiles to get you started with OS X machine for development.
-# Author: https://github.com/gokulkrishh
+# Setup your MacOS for web development at ease.
 # Source: https://github.com/gokulkrishh/dotfiles
 
 ## Custom color codes & utility functions
 source helper/utility.sh
 
-## Terminal & Dock setup
+## Screen, Dock & System setup
 source osx/screen.sh
 source osx/dock.sh
 source osx/system.sh
-source osx/terminal.sh
 
-# Welcome msg
+# Welcome message
 
 e_bold "${tan}┌──────────────────────────────────────────────────────────────┐
 |                                                              |
 | Welcome!!                                                    |
 |                                                              |
-| Setup your OS X machine for web development at ease.         |
+| Setup your MacOS for web development at ease.                |
 |                                                              |
 | Author: https://github.com/gokulkrishh                       |
 |                                                              |
@@ -28,27 +26,37 @@ e_bold "${tan}┌─────────────────────
 
 # 1. Git configuration
 
-e_header "Setup git config (global)"
+e_header "To setup git/npm/ssh configs"
 cp gitignore ~/.gitignore_global  ## Adding .gitignore global
 cp git/.gitconfig ~/.gitconfig     ## Copy .gitconfig to home directory
 git config --global core.excludesfile "${HOME}/.gitignore_global"
+git config --global help.autocorrect 1 ## Git autocorrections
+git config --global init.defaultBranch main ## Git main branch as default
 
-ask "${blue} (Option) Enter Your Github Email: "
+ask "${blue} (Required) Enter Your Fullname: "
+read -r fullName
+if is_empty $fullName; then
+  e_success "Captured the Fullname"
+else
+  e_error "Fullname not set"
+fi
+
+ask "${blue} (Required) Enter Your Email (For Github, NPM config): "
 read -r emailId
 if is_empty $emailId; then
-  git config --global user.email "$emailId" ## Git Email Id
-  e_success "Email is set"
+  git config --global user.email "$emailId"
+  e_success "Captured the Email Id"
 else
   e_error "Not set"
 fi
 
-ask "${blue} (Option) Enter Your Github Username: "
+ask "${blue} (Required) Enter Your Github Username: "
 read -r userName
 if is_empty $userName; then
-  git config --global user.name "$userName" ## Git Username
-  e_success "Username is set"
+  git config --global user.name "$userName"
+  e_success "Captured the Username"
 else
-  e_error "Not set"
+  e_error "Username not set"
 fi
 
 # 2. Install Oh-My-Zsh & custom aliases
@@ -66,7 +74,7 @@ else
   e_note "Check .aliases file for more details."
   cp oh-my-zsh/aliases ~/.aliases                                        ## Copy aliases
   cp oh-my-zsh/zshrc ~/.zshrc                                            ## Copy zshrc configs
-  cp oh-my-zsh/dracula.zsh-theme ~/.oh-my-zsh/themes/dracula.zsh-theme   ## Copy custom dracula theme
+  cp oh-my-zsh/bullet-train.zsh-theme ~/.oh-my-zsh/themes/bullet-train.zsh-theme   ## Copy zsh theme
   cp oh-my-zsh/z.sh ~/z.sh                                               ## Copy z.sh autocompletion file
   git clone https://github.com/peterhurford/git-it-on.zsh ~/.oh-my-zsh/custom/plugins/git-it-on ## Copy git it on utilities plugin
 fi
@@ -84,9 +92,6 @@ else
   e_warning "Homebrew is already installed. Skipping.."
 fi
 
-# 3.5 Install software using Homebrew
-source software/software.sh
-
 # 4. Install ZSH NVM
 
 if test ! $(which nvm); then
@@ -101,25 +106,44 @@ if test ! $(which nvm); then
   sudo chown -R $(whoami) $(npm config get prefix)/{lib/node_modules,bin,share}
 
   ## Set npm global config
-  npm config set init.author.name "Christian Nyvoll" ## Replace it with your name
-  npm config set init.author.email "christiannyvoll@gmail.com" ## Replace it with your email id
+  npm config set init-author-name "$fullName"
+  npm config set init-author-email "$emailId"
+	npm config set init-author-url "$siteName"
 else
   e_warning "NVM is already installed. Skipping.."
 fi
 
-## Yarn install
-if ! type yarn > /dev/null
-then
-  e_header "Install yarn.."
-  brew install yarn
-fi
-
-## Print installed node, npm version
+# 5. Print installed node, npm version
 echo "node --version: $(node --version)"
 echo "npm --version: $(npm --version)"
 
-# Assumes you have want to run the SSH Agent from 1Password, and have the key in there
+
+# 6 Install software using Homebrew
+
+## Install useful mac apps
+brew install --cask \
+  arc \
+  iterm2 \
+  visual-studio-code \
+  1password \
+  spotify \
+  google-chrome \
+  slack \
+
+## Install terminal apps
+brew install \
+  wget \
+  git
+
+# 6a. Assumes you have want to run the SSH Agent from 1Password, and have the key in there
 echo "Host *\n IdentityAgent "~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"" | tee ~/.ssh/config
+
+# 6b. Generate RSA Token for github
+#echo "Generating an RSA token for GitHub"
+#ssh-keygen -t rsa -b 4096 -C "$emailId"
+#echo "Host *\n AddKeysToAgent yes\n UseKeychain yes\n IdentityFile ~/.ssh/id_rsa" | tee ~/.ssh/config
+#eval "$(ssh-agent -s)"
+#echo "run 'pbcopy < ~/.ssh/id_rsa.pub' and paste that into GitHub"
 
 ## Remove cloned dotfiles from system
 if [ -d ~/dotfiles ]; then
@@ -128,6 +152,6 @@ fi
 
 e_thanks "Author: https://github.com/gokulkrishh \n"
 
-echo "🍺  Thats all, Done. Note that some of these changes require a logout/restart to take effect."
+echo "🍺  Thats all, Done. Note that some of these changes require logout/restart to take effect."
 
 # END
