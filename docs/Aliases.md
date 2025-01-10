@@ -75,16 +75,13 @@
 | `gra`                        | Git rebase --abort                                  |
 | `grc`                        | Git rebase --continue                               |
 | `grm`                        | Git rebase -i origin/master                         |
-<<<<<<< HEAD
-| `s`                          | Show git status                                     |
-| `cm`                         | Git commit with commit message                      |
-| `c`                          | Git checkout                                        |
-| `aa`                         | Git add all files                                   |
-| `ph`                         | Git push                                            |
-| `pl`                         | Git pull                                            |
+| `gits`                       | Show git status                                     |
+| `gitcm`                      | Git commit with commit message                      |
+| `gitc`                       | Git checkout                                        |
+| `gitaa`                      | Git add all files                                   |
+| `gitph`                      | Git push                                            |
+| `gitpl`                      | Git pull                                            |
 
-=======
->>>>>>> 3a0268d9c6fccd8ae5221fe342aaf7b40ade2e3b
 
 ## Git Extras
 

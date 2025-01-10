@@ -13,6 +13,12 @@ alias gitc="git checkout"
 alias gitaa="git add ."
 alias gitph="git push"
 alias gitpl="git pull"
+alias gits="git status"
+alias gitcm="git commit -m"
+alias gitc="git checkout"
+alias gitaa="git add ."
+alias gitph="git push"
+alias gitpl="git pull"
 
 # GitHub Contributors List
 function gclist() {
