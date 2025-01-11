@@ -87,7 +87,7 @@ mkdir workspace
 
 if test ! $(which brew); then
   e_header "Installing Homebrew"
-  ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+  ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 else
   e_warning "Homebrew is already installed. Skipping.."
 fi
@@ -136,6 +136,8 @@ brew install \
   git
 
 # 6a. Assumes you have want to run the SSH Agent from 1Password, and have the key in there
+mkdir -p ~/.ssh
+touch ~/.ssh/config
 echo "Host *\n IdentityAgent "~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"" | tee ~/.ssh/config
 
 # 6b. Generate RSA Token for github
