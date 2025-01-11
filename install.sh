@@ -88,6 +88,8 @@ mkdir workspace
 if test ! $(which brew); then
   e_header "Installing Homebrew"
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  echo export PATH="/opt/homebrew/bin:$PATH" >> ~/.zshrc
+  source ~/.zshrc
 else
   e_warning "Homebrew is already installed. Skipping.."
 fi
