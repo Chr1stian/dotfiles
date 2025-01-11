@@ -89,7 +89,7 @@ if test ! $(which brew); then
   e_header "Installing Homebrew"
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
   echo export PATH="/opt/homebrew/bin:$PATH" >> ~/.zshrc
-  source ~/.zshrc
+  export PATH="/opt/homebrew/bin:$PATH"
 else
   e_warning "Homebrew is already installed. Skipping.."
 fi
