@@ -87,7 +87,7 @@ mkdir workspace
 
 if test ! $(which brew); then
   e_header "Installing Homebrew"
-  ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 else
   e_warning "Homebrew is already installed. Skipping.."
 fi
